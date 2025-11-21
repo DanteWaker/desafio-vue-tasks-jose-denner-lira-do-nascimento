@@ -3,6 +3,6 @@
 		"Vue.volar",
 		"vitest.explorer",
 		"ms-playwright.playwright",
-		"biomejs.biome"
+		"rvest.vs-code-prettier-eslint"
 	]
 }
