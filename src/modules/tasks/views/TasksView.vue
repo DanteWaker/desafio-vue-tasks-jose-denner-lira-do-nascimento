@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
 import { useGlobalStore } from "../../../_shared/stores/GlobalStore";
 import type { Task } from "../models/TaskView.models";
 
@@ -7,7 +8,9 @@ import TaskEmpty from "./components/task-empty/TaskEmpty.vue";
 import TaskList from "./components/task-list/TaskList.vue";
 import TaskDetailsModal from "./components/task-details-modal/TaskDetailsModal.vue";
 
-const { tasks, removeTask } = useGlobalStore();
+const globalStore = useGlobalStore();
+const { tasks } = storeToRefs(globalStore);
+const { removeTask } = globalStore;
 
 const selectedTask = ref<Task | null>(null);
 const isModalOpen = ref(false);
@@ -30,7 +33,7 @@ const closeModal = () => {
       v-else
       :tasks="tasks"
       @remove-task="removeTask"
-      @select-task="openModal"
+      @edit-task="openModal"
     />
 
     <TaskDetailsModal

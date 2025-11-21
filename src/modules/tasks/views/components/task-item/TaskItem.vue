@@ -1,61 +1,77 @@
 <script setup lang="ts">
 import type { Task } from "@/modules/tasks/models/TaskView.models";
+import { useGlobalStore } from "@/_shared/stores/GlobalStore";
 
-defineProps<{
+const props = defineProps<{
   task: Task;
 }>();
 
 const emit = defineEmits<{
   (e: "remove", id: string): void;
-  (e: "click", task: Task): void;
+  (e: "edit", task: Task): void;
 }>();
+
+const { toggleTask } = useGlobalStore();
+
+const handleToggle = () => {
+  toggleTask(props.task.id);
+};
+
+const handleEdit = () => {
+  emit("edit", props.task);
+};
+
+const handleRemove = () => {
+  emit("remove", props.task.id);
+};
 </script>
 
 <template>
-  <li class="bg-white shadow overflow-hidden sm:rounded-md">
-    <div
-      class="block hover:bg-gray-50 cursor-pointer"
-      @click="emit('click', task)"
-    >
-      <div class="px-4 py-4 sm:px-6">
-        <div class="flex items-center justify-between">
-          <p class="text-sm font-medium text-indigo-600 truncate">
-            {{ task.title }}
-          </p>
-          <div class="ml-2 flex-shrink-0 flex items-center gap-2">
+  <li
+    class="bg-white shadow overflow-hidden sm:rounded-md border"
+    :class="task.is_completed ? 'border-green-500' : 'border-transparent'"
+  >
+    <div class="px-4 py-4 sm:px-6">
+      <div class="flex items-start justify-between gap-6">
+        <label class="flex items-start gap-3 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            :checked="task.is_completed"
+            class="mt-1 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+            @change="handleToggle"
+          />
+          <div>
             <p
-              class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+              class="text-sm font-semibold"
+              :class="
+                task.is_completed
+                  ? 'text-gray-400 line-through'
+                  : 'text-gray-900'
+              "
             >
-              {{ task.is_completed ? "Completa" : "Pendente" }}
+              {{ task.title }}
             </p>
-            <button
-              @click.stop="emit('remove', task.id)"
-              class="text-red-600 hover:text-red-900 p-1 rounded-full hover:bg-red-50 transition-colors"
-              title="Excluir task"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-        <div class="mt-2 sm:flex sm:justify-between">
-          <div class="sm:flex">
-            <p class="flex items-center text-sm text-gray-500">
-              {{ task.description }}
+            <p class="text-sm text-gray-500">
+              {{ task.description || "Sem descrição" }}
             </p>
           </div>
+        </label>
+
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            class="inline-flex items-center rounded-md border border-gray-200 px-3 py-1 text-xs font-medium text-gray-700 hover:bg-gray-100"
+            @click="handleEdit"
+          >
+            Editar
+          </button>
+          <button
+            type="button"
+            class="inline-flex items-center rounded-md border border-transparent px-3 py-1 text-xs font-medium text-white bg-red-600 hover:bg-red-700"
+            @click="handleRemove"
+          >
+            Excluir
+          </button>
         </div>
       </div>
     </div>

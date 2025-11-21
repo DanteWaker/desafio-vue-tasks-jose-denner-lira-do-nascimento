@@ -1,26 +1,50 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { useGlobalStore } from "@/_shared/stores/GlobalStore";
+import TaskFormModal from "@/modules/tasks/views/components/task-form-modal/TaskFormModal.vue";
 
 const { addTask } = useGlobalStore();
 
-const handleAddTask = () => {
-	addTask({
-		description: `Nova tarefa criada em ${new Date().toLocaleString()}`,
-		title: "Nova Tarefa",
-	});
+const isModalOpen = ref(false);
+
+const openModal = () => {
+  isModalOpen.value = true;
+};
+
+const closeModal = () => {
+  isModalOpen.value = false;
+};
+
+const handleSubmit = (payload: { title: string; description: string }) => {
+  addTask(payload);
+  closeModal();
 };
 </script>
 
 <template>
-    <div>
-        <button @click="handleAddTask"
-            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-            <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd"
-                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                    clip-rule="evenodd" />
-            </svg>
-            Add Task
-        </button>
-    </div>
+  <div>
+    <button
+      @click="openModal"
+      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+    >
+      <svg
+        class="-ml-1 mr-2 h-5 w-5"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      Add Task
+    </button>
+    <TaskFormModal
+      :is-open="isModalOpen"
+      @close="closeModal"
+      @submit="handleSubmit"
+    />
+  </div>
 </template>
