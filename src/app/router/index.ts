@@ -1,13 +1,23 @@
+import TasksView from '@/modules/tasks/views/TasksView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    // {
-    //   path: '/',
-    //   name: 'home',
-    //   component: HomeView,
-    // },
+    {
+      path: '/',
+      redirect: '/tasks',
+    },
+    {
+      path: '/tasks',
+      name: 'tasks',
+      component: TasksView,
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: TasksView, // Placeholder
+    },
     // {
     //   path: '/about',
     //   name: 'about',
