@@ -1,9 +1,12 @@
 import { useLocalStorage } from "@vueuse/core";
 import { defineStore } from "pinia";
+import { computed, ref } from "vue"; // Adicione ref
 import type { Task } from "@/modules/tasks/models/TaskView.models";
 
 export const useGlobalStore = defineStore("global", () => {
 	const tasks = useLocalStorage<Task[]>("vue-tasks-db", []);
+
+	const currentFilter = ref<"all" | "completed" | "pending">("all");
 
 	const addTask = (
 		task: Omit<Task, "id" | "created_at" | "updated_at" | "is_completed">,
@@ -36,11 +39,35 @@ export const useGlobalStore = defineStore("global", () => {
 		}
 	};
 
+	const completedTasks = computed(() =>
+		tasks.value.filter((t) => t.is_completed),
+	);
+	const pendingTasks = computed(() =>
+		tasks.value.filter((t) => !t.is_completed),
+	);
+	const totalTasks = computed(() => tasks.value.length);
+
+	const filteredTasks = computed(() => {
+		if (currentFilter.value === "completed") return completedTasks.value;
+		if (currentFilter.value === "pending") return pendingTasks.value;
+		return tasks.value;
+	});
+
+	const setFilter = (filter: "all" | "completed" | "pending") => {
+		currentFilter.value = filter;
+	};
+
 	return {
 		tasks,
+		currentFilter,
+		filteredTasks,
+		completedTasks,
+		pendingTasks,
+		totalTasks,
 		addTask,
 		removeTask,
 		updateTask,
 		toggleTask,
+		setFilter,
 	};
 });
