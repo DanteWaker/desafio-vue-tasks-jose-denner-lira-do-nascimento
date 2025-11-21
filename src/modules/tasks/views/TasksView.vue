@@ -5,7 +5,7 @@ import type { Task } from "../models/TaskView.models";
 
 import TaskEmpty from "./components/task-empty/TaskEmpty.vue";
 import TaskList from "./components/task-list/TaskList.vue";
-import TaskFormModal from "./components/task-form-modal/TaskFormModal.vue";
+import TaskDetailsModal from "./components/task-details-modal/TaskDetailsModal.vue";
 
 const { tasks, removeTask } = useGlobalStore();
 
@@ -33,7 +33,7 @@ const closeModal = () => {
       @select-task="openModal"
     />
 
-    <TaskFormModal
+    <TaskDetailsModal
       :is-open="isModalOpen"
       :task="selectedTask"
       @close="closeModal"
