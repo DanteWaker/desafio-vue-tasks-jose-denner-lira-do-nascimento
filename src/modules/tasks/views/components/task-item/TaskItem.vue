@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { IconPencil, IconTrash } from "@tabler/icons-vue";
+import Button from "@/_shared/components/button/Button.vue";
 import TaskFormModal from "../task-form-modal/TaskFormModal.vue";
 import type { TaskItemProps } from "./TaskItem.model";
 import { TaskItemViewModel } from "./TaskItem.viewmodel";
@@ -53,20 +55,18 @@ const {
         </label>
 
         <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
-          <button
-            type="button"
-            class="inline-flex items-center rounded-md border border-gray-200 px-3 py-1 text-xs font-medium text-gray-700 hover:bg-gray-100"
+          <Button
+            label="Editar"
+            variant="secondary"
+            :icon="IconPencil"
             @click="handleEdit"
-          >
-            Editar
-          </button>
-          <button
-            type="button"
-            class="inline-flex items-center rounded-md border border-transparent px-3 py-1 text-xs font-medium text-white bg-red-600 hover:bg-red-700"
+          />
+          <Button
+            label="Excluir"
+            variant="danger"
+            :icon="IconTrash"
             @click="handleRemove"
-          >
-            Excluir
-          </button>
+          />
         </div>
       </div>
     </div>
