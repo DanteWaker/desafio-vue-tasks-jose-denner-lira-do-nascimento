@@ -25,31 +25,6 @@ O fluxo de dados é reativo e unidirecional, orquestrado pelo Vue 3 e Pinia:
 4.  **Renderização na View**: A View (componente `.vue`) consome os dados reativos e as funções expostas pelo seu composable ou view-model e renderiza a interface.
 5.  **Interação do Usuário**: Eventos do usuário na View (ex: `@click`) acionam funções no ViewModel/Composable, que por sua vez podem invocar ações nas stores do Pinia, reiniciando o ciclo de forma reativa.
 
-```mermaid
-graph TD
-    subgraph Componente
-        View(.vue)
-    end
-
-    subgraph Lógica
-        ViewModel(.viewmodel.ts)
-        Composable(useFeature.ts)
-    end
-
-    subgraph Estado
-        PiniaStore
-    end
-
-    PiniaStore -- Dados Reativos --> Composable;
-    ViewModel -- Prepara Dados --> View;
-    Composable -- Expõe Lógica e Dados --> View;
-
-    View -- Evento do Usuário --> ViewModel;
-    View -- Evento do Usuário --> Composable;
-    Composable -- Chama Ação --> PiniaStore;
-
-```
-
 ## 2. Stack Tecnológica
 
 | Tecnologia         | Versão (aprox.) | Justificativa de Uso                                                                                             |
@@ -60,8 +35,6 @@ graph TD
 | **Pinia**          | `^3.0`          | Biblioteca oficial de gerenciamento de estado para o Vue. Escolhida por sua simplicidade, API intuitiva e integração total com TypeScript. |
 | **Vue Router**     | `^4.6`          | Biblioteca oficial para gerenciamento de rotas no lado do cliente (SPA).                                         |
 | **TailwindCSS**    | `^4.1`          | Framework CSS utility-first que permite a criação de designs customizados de forma rápida e consistente.         |
-| **Vitest**         | `^3.2`          | Framework de testes unitários rápido e configurado para trabalhar com Vite.                                      |
-| **Playwright**     | `^1.56`         | Framework para testes end-to-end (E2E) que permite testar a aplicação em múltiplos navegadores.                  |
 | **ESLint**         | `^9.39`         | Ferramenta para análise estática de código que ajuda a encontrar problemas e a manter um padrão de codificação.    |
 
 ## 3. Estrutura de Pastas e Módulos
@@ -126,17 +99,7 @@ Para configurar e rodar o projeto localmente, siga os passos abaixo. O gerenciad
     pnpm build
     ```
 
-4.  **Executar Testes Unitários**:
-    ```bash
-    pnpm test:unit
-    ```
-
-5.  **Executar Testes End-to-End**:
-    ```bash
-    pnpm test:e2e
-    ```
-
-6.  **Executar Linter**:
+4.  **Executar Linter**:
     Verifica a consistência e qualidade do código.
     ```bash
     pnpm lint
