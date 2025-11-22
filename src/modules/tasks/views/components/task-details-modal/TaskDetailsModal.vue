@@ -1,24 +1,21 @@
 <script setup lang="ts">
-import type { Task } from "../../../models/TaskView.models";
+import type { TaskDetailsModalProps } from "./TaskDetailsModal.model";
+import { TaskDetailsModalViewModel } from "./TaskDetailsModal.viewmodel";
 
-defineProps<{
-  isOpen: boolean;
-  task: Task | null;
-}>();
+const props = defineProps<TaskDetailsModalProps>();
 
 const emit = defineEmits<{
   (e: "close"): void;
 }>();
 
-const closeModal = () => {
-  emit("close");
-};
+const { isVisible, formattedDate, statusClasses, statusLabel, closeModal } =
+  TaskDetailsModalViewModel(props, emit);
 </script>
 
 <template>
   <teleport to="body">
     <div
-      v-if="isOpen && task"
+      v-if="isVisible && task"
       class="fixed inset-0 z-50 overflow-y-auto"
       aria-labelledby="modal-title"
       role="dialog"
@@ -81,18 +78,13 @@ const closeModal = () => {
                   </p>
                   <div class="mt-4 flex items-center gap-2">
                     <span class="text-xs text-gray-400"
-                      >Criado em:
-                      {{ new Date(task.created_at).toLocaleDateString() }}</span
+                      >Criado em: {{ formattedDate }}</span
                     >
                     <span
-                      :class="
-                        task.is_completed
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-yellow-100 text-yellow-800'
-                      "
+                      :class="statusClasses"
                       class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
                     >
-                      {{ task.is_completed ? "Concluída" : "Pendente" }}
+                      {{ statusLabel }}
                     </span>
                   </div>
                 </div>
