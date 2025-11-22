@@ -1,16 +1,8 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import TaskFormModal from "@/modules/tasks/views/components/task-form-modal/TaskFormModal.vue";
+import { ButtonViewModel } from "./Button.viewmodel";
 
-const isModalOpen = ref(false);
-
-const openModal = () => {
-  isModalOpen.value = true;
-};
-
-const closeModal = () => {
-  isModalOpen.value = false;
-};
+const { isModalOpen, openModal, closeModal } = ButtonViewModel();
 </script>
 
 <template>

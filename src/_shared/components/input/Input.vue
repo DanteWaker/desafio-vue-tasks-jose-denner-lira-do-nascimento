@@ -1,25 +1,39 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { InputViewModel } from "./Input.viewmodel";
 
-const searchQuery = ref("");
+const { searchQuery, setSearchQuery } = InputViewModel();
+
+const handleInput = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  setSearchQuery(target.value);
+};
 </script>
 
-
 <template>
-
   <div class="flex-1 max-w-lg mx-4">
     <div class="relative">
-      <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-        <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd"
+      <span
+        class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+      >
+        <svg
+          class="h-5 w-5 text-gray-400"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
             d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-            clip-rule="evenodd" />
+            clip-rule="evenodd"
+          />
         </svg>
       </span>
-      <input v-model="searchQuery" type="text"
+      <input
+        :value="searchQuery"
+        @input="handleInput"
+        type="text"
         class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:text-sm transition duration-150 ease-in-out"
-        placeholder="Pesquisar tarefas..." />
+        placeholder="Pesquisar tarefas..."
+      />
     </div>
   </div>
-
 </template>
