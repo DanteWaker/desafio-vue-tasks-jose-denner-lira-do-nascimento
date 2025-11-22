@@ -2,6 +2,7 @@
 import Button from "../../components/button/Button.vue";
 import Input from "../../components/input/Input.vue";
 import Logo from "../../components/logo/Logo.vue";
+import ToastContainer from "../../components/toast/ToastContainer.vue";
 </script>
 
 <template>
@@ -21,5 +22,6 @@ import Logo from "../../components/logo/Logo.vue";
         </slot>
       </main>
     </div>
+    <ToastContainer />
   </div>
 </template>
