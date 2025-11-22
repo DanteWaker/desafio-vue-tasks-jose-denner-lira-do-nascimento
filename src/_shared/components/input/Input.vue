@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { InputProps } from "./Input.model";
+import type { InputEmits, InputProps } from "./Input.model";
 import { InputViewModel } from "./Input.viewmodel";
 
 const props = withDefaults(defineProps<InputProps>(), {
@@ -10,14 +10,9 @@ const props = withDefaults(defineProps<InputProps>(), {
   modelValue: "",
 });
 
-const emit = defineEmits<{ (e: "update:modelValue", value: string): void }>();
+const emit = defineEmits<InputEmits>();
 
-const { inputClasses, resolvedId } = InputViewModel(props);
-
-const handleInput = (event: Event) => {
-  const target = event.target as HTMLInputElement | HTMLTextAreaElement;
-  emit("update:modelValue", target.value);
-};
+const { inputClasses, resolvedId, handleInput } = InputViewModel(props, emit);
 </script>
 
 <template>

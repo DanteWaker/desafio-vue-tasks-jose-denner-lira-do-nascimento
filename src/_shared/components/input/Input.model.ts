@@ -1,5 +1,7 @@
 import type { Component, ComputedRef } from "vue";
 
+export type InputEmits = (event: "update:modelValue", value: string) => void;
+
 export interface InputProps {
   modelValue?: string;
   label?: string;
@@ -18,4 +20,5 @@ export interface InputProps {
 export interface InputModel {
   inputClasses: ComputedRef<string>;
   resolvedId: ComputedRef<string>;
+  handleInput: (event: Event) => void;
 }

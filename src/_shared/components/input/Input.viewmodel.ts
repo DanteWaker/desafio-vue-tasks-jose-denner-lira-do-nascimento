@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import type { InputModel, InputProps } from "./Input.model";
+import type { InputEmits, InputModel, InputProps } from "./Input.model";
 
 let inputIdCounter = 0;
 const createFallbackId = () => {
@@ -7,7 +7,10 @@ const createFallbackId = () => {
   return `input-${inputIdCounter}`;
 };
 
-export function InputViewModel(props: InputProps): InputModel {
+export function InputViewModel(
+  props: InputProps,
+  emit: InputEmits
+): InputModel {
   const fallbackId = createFallbackId();
 
   const inputClasses = computed(() => {
@@ -29,8 +32,14 @@ export function InputViewModel(props: InputProps): InputModel {
 
   const resolvedId = computed(() => props.id ?? fallbackId);
 
+  const handleInput = (event: Event) => {
+    const target = event.target as HTMLInputElement | HTMLTextAreaElement;
+    emit("update:modelValue", target.value);
+  };
+
   return {
     inputClasses,
     resolvedId,
+    handleInput,
   };
 }
