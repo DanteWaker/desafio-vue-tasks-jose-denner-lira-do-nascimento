@@ -6,13 +6,47 @@ import { useToastStore } from "./ToastStore";
 import { createTaskNotifier } from "@/_shared/utils/TaskNotifier";
 
 export const useGlobalStore = defineStore("global", () => {
-  const tasks = useLocalStorage<Task[]>("vue-tasks-db", []);
-
-  const currentFilter = ref<TaskFilter>("all");
-  const searchQuery = ref("");
+  // --- Dependencies ---
   const toastStore = useToastStore();
   const taskNotifier = createTaskNotifier(toastStore);
 
+  // --- State ---
+  const tasks = useLocalStorage<Task[]>("vue-tasks-db", []);
+  const currentFilter = ref<TaskFilter>("all");
+  const searchQuery = ref("");
+
+  // --- Getters ---
+  const completedTasks = computed(() =>
+    tasks.value.filter((t) => t.is_completed)
+  );
+
+  const pendingTasks = computed(() =>
+    tasks.value.filter((t) => !t.is_completed)
+  );
+
+  const totalTasks = computed(() => tasks.value.length);
+
+  const filteredTasks = computed(() => {
+    let baseTasks = tasks.value;
+    if (currentFilter.value === "completed") {
+      baseTasks = completedTasks.value;
+    } else if (currentFilter.value === "pending") {
+      baseTasks = pendingTasks.value;
+    }
+
+    const normalizedQuery = searchQuery.value.trim().toLowerCase();
+    if (!normalizedQuery) {
+      return baseTasks;
+    }
+
+    return baseTasks.filter((task) =>
+      task.title.toLowerCase().includes(normalizedQuery)
+    );
+  });
+
+  // --- Actions ---
+
+  // Task Actions
   const addTask = (
     task: Omit<Task, "id" | "created_at" | "updated_at" | "is_completed">
   ) => {
@@ -58,32 +92,7 @@ export const useGlobalStore = defineStore("global", () => {
     taskNotifier.notifyTaskStatusFailed();
   };
 
-  const completedTasks = computed(() =>
-    tasks.value.filter((t) => t.is_completed)
-  );
-  const pendingTasks = computed(() =>
-    tasks.value.filter((t) => !t.is_completed)
-  );
-  const totalTasks = computed(() => tasks.value.length);
-
-  const filteredTasks = computed(() => {
-    let baseTasks = tasks.value;
-    if (currentFilter.value === "completed") {
-      baseTasks = completedTasks.value;
-    } else if (currentFilter.value === "pending") {
-      baseTasks = pendingTasks.value;
-    }
-
-    const normalizedQuery = searchQuery.value.trim().toLowerCase();
-    if (!normalizedQuery) {
-      return baseTasks;
-    }
-
-    return baseTasks.filter((task) =>
-      task.title.toLowerCase().includes(normalizedQuery)
-    );
-  });
-
+  // Filter & Search Actions
   const setFilter = (filter: TaskFilter) => {
     currentFilter.value = filter;
 
@@ -95,13 +104,18 @@ export const useGlobalStore = defineStore("global", () => {
   };
 
   return {
+    // State
     tasks,
     currentFilter,
     searchQuery,
+
+    // Getters
     filteredTasks,
     completedTasks,
     pendingTasks,
     totalTasks,
+
+    // Actions
     addTask,
     removeTask,
     updateTask,
