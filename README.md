@@ -22,4 +22,3 @@ Essa organizacao facilita manutencao, possibilita testes isolados e favorece a e
 - Vite
 - TypeScript
 - Pinia (stores globais)
-- Vitest + Playwright para testes
