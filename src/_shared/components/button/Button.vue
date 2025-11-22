@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useGlobalStore } from "@/_shared/stores/GlobalStore";
 import TaskFormModal from "@/modules/tasks/views/components/task-form-modal/TaskFormModal.vue";
-
-const { addTask } = useGlobalStore();
 
 const isModalOpen = ref(false);
 
@@ -13,11 +10,6 @@ const openModal = () => {
 
 const closeModal = () => {
   isModalOpen.value = false;
-};
-
-const handleSubmit = (payload: { title: string; description: string }) => {
-  addTask(payload);
-  closeModal();
 };
 </script>
 
@@ -41,10 +33,6 @@ const handleSubmit = (payload: { title: string; description: string }) => {
       </svg>
       Add Task
     </button>
-    <TaskFormModal
-      :is-open="isModalOpen"
-      @close="closeModal"
-      @submit="handleSubmit"
-    />
+    <TaskFormModal :is-open="isModalOpen" @close="closeModal" />
   </div>
 </template>

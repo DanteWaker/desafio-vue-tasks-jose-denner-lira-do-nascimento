@@ -9,7 +9,6 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: "removeTask", id: string): void;
-  (e: "editTask", task: Task): void;
 }>();
 </script>
 
@@ -20,7 +19,6 @@ const emit = defineEmits<{
       :key="task.id"
       :task="task"
       @remove="emit('removeTask', $event)"
-      @edit="emit('editTask', $event)"
     />
   </ul>
 </template>

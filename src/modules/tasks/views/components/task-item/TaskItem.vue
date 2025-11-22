@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import type { Task } from "@/modules/tasks/models/TaskView.models";
 import { useGlobalStore } from "@/_shared/stores/GlobalStore";
+import TaskFormModal from "../task-form-modal/TaskFormModal.vue";
 
 const props = defineProps<{
   task: Task;
@@ -8,17 +10,21 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: "remove", id: string): void;
-  (e: "edit", task: Task): void;
 }>();
 
 const { toggleTask } = useGlobalStore();
+const isEditModalOpen = ref(false);
 
 const handleToggle = () => {
   toggleTask(props.task.id);
 };
 
 const handleEdit = () => {
-  emit("edit", props.task);
+  isEditModalOpen.value = true;
+};
+
+const closeEditModal = () => {
+  isEditModalOpen.value = false;
 };
 
 const handleRemove = () => {
@@ -75,5 +81,10 @@ const handleRemove = () => {
         </div>
       </div>
     </div>
+    <TaskFormModal
+      :is-open="isEditModalOpen"
+      :task-id="task.id"
+      @close="closeEditModal"
+    />
   </li>
 </template>

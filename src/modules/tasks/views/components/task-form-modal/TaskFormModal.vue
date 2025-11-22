@@ -1,18 +1,32 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
+import { storeToRefs } from "pinia";
+import { useGlobalStore } from "@/_shared/stores/GlobalStore";
 
 const props = defineProps<{
   isOpen: boolean;
+  taskId?: string | null;
 }>();
 
 const emit = defineEmits<{
   (e: "close"): void;
-  (e: "submit", payload: { title: string; description: string }): void;
 }>();
+
+const globalStore = useGlobalStore();
+const { tasks } = storeToRefs(globalStore);
+const { addTask, updateTask } = globalStore;
 
 const title = ref("");
 const description = ref("");
 const error = ref("");
+
+const isEditing = computed(() => Boolean(props.taskId));
+const modalTitle = computed(() =>
+  isEditing.value ? "Editar tarefa" : "Nova tarefa"
+);
+const primaryButtonLabel = computed(() =>
+  isEditing.value ? "Salvar alterações" : "Criar tarefa"
+);
 
 const resetForm = () => {
   title.value = "";
@@ -20,11 +34,40 @@ const resetForm = () => {
   error.value = "";
 };
 
+const loadTaskData = () => {
+  if (!props.taskId) {
+    resetForm();
+    return;
+  }
+
+  const existingTask = tasks.value.find((task) => task.id === props.taskId);
+  if (!existingTask) {
+    error.value = "Tarefa não encontrada.";
+    resetForm();
+    return;
+  }
+
+  title.value = existingTask.title;
+  description.value = existingTask.description ?? "";
+  error.value = "";
+};
+
 watch(
   () => props.isOpen,
   (isOpen) => {
-    if (!isOpen) {
+    if (isOpen) {
+      loadTaskData();
+    } else {
       resetForm();
+    }
+  }
+);
+
+watch(
+  () => props.taskId,
+  () => {
+    if (props.isOpen) {
+      loadTaskData();
     }
   }
 );
@@ -39,10 +82,27 @@ const handleSubmit = () => {
     return;
   }
 
-  emit("submit", {
-    title: title.value.trim(),
-    description: description.value.trim(),
-  });
+  const normalizedDescription = description.value.trim();
+
+  if (isEditing.value && props.taskId) {
+    const existingTask = tasks.value.find((task) => task.id === props.taskId);
+    if (!existingTask) {
+      error.value = "Tarefa não encontrada.";
+      return;
+    }
+
+    updateTask({
+      ...existingTask,
+      title: title.value.trim(),
+      description: normalizedDescription || undefined,
+      updated_at: new Date(),
+    });
+  } else {
+    addTask({
+      title: title.value.trim(),
+      description: normalizedDescription || undefined,
+    });
+  }
 
   resetForm();
   emit("close");
@@ -88,7 +148,7 @@ const handleSubmit = () => {
                       class="text-lg leading-6 font-medium text-gray-900"
                       id="modal-title"
                     >
-                      Nova tarefa
+                      {{ modalTitle }}
                     </h3>
                     <button
                       type="button"
@@ -156,7 +216,7 @@ const handleSubmit = () => {
                 type="submit"
                 class="mt-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
               >
-                Criar tarefa
+                {{ primaryButtonLabel }}
               </button>
               <button
                 type="button"
