@@ -1,6 +1,6 @@
 import { useLocalStorage } from "@vueuse/core";
 import { defineStore } from "pinia";
-import { computed, ref } from "vue"; // Adicione ref
+import { computed, ref } from "vue";
 import type { Task, TaskFilter } from "@/modules/tasks/models/TaskView.models";
 import { useToastStore } from "./ToastStore";
 import { createTaskNotifier } from "@/_shared/utils/TaskNotifier";
