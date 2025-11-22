@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { Task } from "@/modules/tasks/models/TaskView.models";
-
 import TaskItem from "../task-item/TaskItem.vue";
+import type { TaskListProps } from "./TaskList.model";
+import { TaskListViewModel } from "./TaskList.viewmodel";
 
-defineProps<{
-  tasks: Task[];
-}>();
+const props = defineProps<TaskListProps>();
 
 const emit = defineEmits<{
   (e: "removeTask", id: string): void;
 }>();
+
+const { handleRemove } = TaskListViewModel(props, emit);
 </script>
 
 <template>
@@ -18,7 +18,7 @@ const emit = defineEmits<{
       v-for="task in tasks"
       :key="task.id"
       :task="task"
-      @remove="emit('removeTask', $event)"
+      @remove="handleRemove"
     />
   </ul>
 </template>
