@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { IconPlus } from "@tabler/icons-vue";
+import { computed, ref } from "vue";
+import { IconPlus, IconSearch } from "@tabler/icons-vue";
+import { storeToRefs } from "pinia";
 import Button from "../../components/button/Button.vue";
 import Input from "../../components/input/Input.vue";
 import Logo from "../../components/logo/Logo.vue";
 import ToastContainer from "../../components/toast/ToastContainer.vue";
 import TaskFormModal from "@/modules/tasks/views/components/task-form-modal/TaskFormModal.vue";
+import { useGlobalStore } from "@/_shared/stores/GlobalStore";
 
 const isTaskModalOpen = ref(false);
 const openTaskModal = () => {
@@ -14,6 +16,16 @@ const openTaskModal = () => {
 const closeTaskModal = () => {
   isTaskModalOpen.value = false;
 };
+
+const globalStore = useGlobalStore();
+const { searchQuery } = storeToRefs(globalStore);
+
+const searchQueryModel = computed({
+  get: () => searchQuery.value,
+  set: (value: string) => {
+    globalStore.setSearchQuery(value);
+  },
+});
 </script>
 
 <template>
@@ -30,8 +42,16 @@ const closeTaskModal = () => {
             <Button label="Add Task" :icon="IconPlus" @click="openTaskModal" />
           </div>
         </div>
-        <div class="flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
-          <Input />
+        <div
+          class="flex flex-col gap-3 md:flex-row md:items-center md:gap-4 w-full"
+        >
+          <div class="flex-1 w-full md:w-auto">
+            <Input
+              v-model="searchQueryModel"
+              placeholder="Pesquisar tarefas..."
+              :icon="IconSearch"
+            />
+          </div>
           <div class="hidden md:block">
             <Button label="Add Task" :icon="IconPlus" @click="openTaskModal" />
           </div>

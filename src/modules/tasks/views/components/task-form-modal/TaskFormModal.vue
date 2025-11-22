@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { IconX } from "@tabler/icons-vue";
 import Button from "@/_shared/components/button/Button.vue";
+import Input from "@/_shared/components/input/Input.vue";
 import type { TaskFormModalProps } from "./TaskFormModal.model";
 import { TaskFormModalViewModel } from "./TaskFormModal.viewmodel";
 
@@ -74,35 +75,21 @@ const {
                   </div>
 
                   <div class="mt-4 space-y-4">
-                    <div>
-                      <label
-                        for="task-title"
-                        class="block text-sm font-medium text-gray-700"
-                        >Título</label
-                      >
-                      <input
-                        id="task-title"
-                        v-model="title"
-                        type="text"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                        placeholder="Ex.: Revisar código"
-                      />
-                    </div>
+                    <Input
+                      v-model="title"
+                      label="Título"
+                      placeholder="Ex.: Revisar código"
+                      id="task-title"
+                    />
 
-                    <div>
-                      <label
-                        for="task-description"
-                        class="block text-sm font-medium text-gray-700"
-                        >Descrição</label
-                      >
-                      <textarea
-                        id="task-description"
-                        v-model="description"
-                        rows="3"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                        placeholder="Detalhes opcionais"
-                      ></textarea>
-                    </div>
+                    <Input
+                      v-model="description"
+                      label="Descrição"
+                      placeholder="Detalhes opcionais"
+                      id="task-description"
+                      textarea
+                      :rows="3"
+                    />
 
                     <p v-if="error" class="text-sm text-red-500">{{ error }}</p>
                   </div>

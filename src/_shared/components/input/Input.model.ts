@@ -1,6 +1,21 @@
-import type { Ref } from "vue";
+import type { Component, ComputedRef } from "vue";
+
+export interface InputProps {
+  modelValue?: string;
+  label?: string;
+  placeholder?: string;
+  icon?: Component;
+  type?: string;
+  textarea?: boolean;
+  rows?: number;
+  id?: string;
+  name?: string;
+  disabled?: boolean;
+  error?: string;
+  autocomplete?: string;
+}
 
 export interface InputModel {
-  searchQuery: Ref<string>;
-  setSearchQuery: (value: string) => void;
+  inputClasses: ComputedRef<string>;
+  resolvedId: ComputedRef<string>;
 }
