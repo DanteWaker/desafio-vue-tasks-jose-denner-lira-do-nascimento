@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { LogoViewModel } from "./Logo.viewmodel";
 
-const { logoText, logoIcon } = LogoViewModel();
+const { logoText } = LogoViewModel();
 </script>
 
 <template>
