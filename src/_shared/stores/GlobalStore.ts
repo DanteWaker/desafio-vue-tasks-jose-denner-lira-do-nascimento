@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue"; // Adicione ref
 import type { Task, TaskFilter } from "@/modules/tasks/models/TaskView.models";
 import { useToastStore } from "./ToastStore";
-import { createTaskNotifier } from "@/_shared/services/TaskNotifier";
+import { createTaskNotifier } from "@/_shared/utils/TaskNotifier";
 
 export const useGlobalStore = defineStore("global", () => {
   const tasks = useLocalStorage<Task[]>("vue-tasks-db", []);
