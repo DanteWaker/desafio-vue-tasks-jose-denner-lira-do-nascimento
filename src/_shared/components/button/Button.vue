@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ButtonProps } from "./Button.model";
+import type { ButtonEmits, ButtonProps } from "./Button.model";
 import { ButtonViewModel } from "./Button.viewmodel";
 
 const props = withDefaults(defineProps<ButtonProps>(), {
@@ -9,19 +9,9 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   disabled: false,
 });
 
-const emit = defineEmits<{ (e: "click", event: MouseEvent): void }>();
+const emit = defineEmits<ButtonEmits>();
 
-const { classes, iconClasses } = ButtonViewModel(props);
-
-const handleClick = (event: MouseEvent) => {
-  if (props.disabled) {
-    event.preventDefault();
-    event.stopPropagation();
-    return;
-  }
-
-  emit("click", event);
-};
+const { classes, iconClasses, handleClick } = ButtonViewModel(props, emit);
 </script>
 
 <template>
