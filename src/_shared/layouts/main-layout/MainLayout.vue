@@ -1,31 +1,14 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
 import { IconPlus, IconSearch } from "@tabler/icons-vue";
-import { storeToRefs } from "pinia";
 import Button from "../../components/button/Button.vue";
 import Input from "../../components/input/Input.vue";
 import Logo from "../../components/logo/Logo.vue";
 import ToastContainer from "../../components/toast/ToastContainer.vue";
 import TaskFormModal from "@/modules/tasks/views/components/task-form-modal/TaskFormModal.vue";
-import { useGlobalStore } from "@/_shared/stores/GlobalStore";
+import { useMainLayoutViewModel } from "./MainLayout.viewmodel";
 
-const isTaskModalOpen = ref(false);
-const openTaskModal = () => {
-  isTaskModalOpen.value = true;
-};
-const closeTaskModal = () => {
-  isTaskModalOpen.value = false;
-};
-
-const globalStore = useGlobalStore();
-const { searchQuery } = storeToRefs(globalStore);
-
-const searchQueryModel = computed({
-  get: () => searchQuery.value,
-  set: (value: string) => {
-    globalStore.setSearchQuery(value);
-  },
-});
+const { isTaskModalOpen, searchQueryModel, openTaskModal, closeTaskModal } =
+  useMainLayoutViewModel();
 </script>
 
 <template>
