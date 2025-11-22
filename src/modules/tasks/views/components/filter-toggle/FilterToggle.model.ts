@@ -1,4 +1,5 @@
 import type { Ref } from "vue";
+import type { ButtonVariant } from "@/_shared/components/button/Button.model";
 import type { TaskFilter } from "@/modules/tasks/models/TaskView.models";
 
 export interface FilterOption {
@@ -9,6 +10,6 @@ export interface FilterOption {
 export interface FilterToggleModel {
   filters: FilterOption[];
   currentFilter: Ref<TaskFilter>;
-  getButtonClasses: (filter: TaskFilter) => string;
+  getButtonVariant: (filter: TaskFilter) => ButtonVariant;
   handleFilterClick: (filter: TaskFilter) => void;
 }
