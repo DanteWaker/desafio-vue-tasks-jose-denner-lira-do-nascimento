@@ -1,8 +1,19 @@
 <script setup lang="ts">
+import { ref } from "vue";
+import { IconPlus } from "@tabler/icons-vue";
 import Button from "../../components/button/Button.vue";
 import Input from "../../components/input/Input.vue";
 import Logo from "../../components/logo/Logo.vue";
 import ToastContainer from "../../components/toast/ToastContainer.vue";
+import TaskFormModal from "@/modules/tasks/views/components/task-form-modal/TaskFormModal.vue";
+
+const isTaskModalOpen = ref(false);
+const openTaskModal = () => {
+  isTaskModalOpen.value = true;
+};
+const closeTaskModal = () => {
+  isTaskModalOpen.value = false;
+};
 </script>
 
 <template>
@@ -16,13 +27,13 @@ import ToastContainer from "../../components/toast/ToastContainer.vue";
         <div class="flex items-center justify-between gap-4">
           <Logo />
           <div class="md:hidden">
-            <Button />
+            <Button label="Add Task" :icon="IconPlus" @click="openTaskModal" />
           </div>
         </div>
         <div class="flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
           <Input />
           <div class="hidden md:block">
-            <Button />
+            <Button label="Add Task" :icon="IconPlus" @click="openTaskModal" />
           </div>
         </div>
       </div>
@@ -35,5 +46,6 @@ import ToastContainer from "../../components/toast/ToastContainer.vue";
     </main>
 
     <ToastContainer />
+    <TaskFormModal :is-open="isTaskModalOpen" @close="closeTaskModal" />
   </div>
 </template>
