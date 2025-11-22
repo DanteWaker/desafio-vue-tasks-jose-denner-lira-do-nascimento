@@ -1,6 +1,7 @@
 import { storeToRefs } from "pinia";
 import { useGlobalStore } from "@/_shared/stores/GlobalStore";
-import type { FilterToggleModel, TaskFilter } from "./FilterToggle.model";
+import type { TaskFilter } from "@/modules/tasks/models/TaskView.models";
+import type { FilterToggleModel } from "./FilterToggle.model";
 
 export function FilterToggleViewModel(): FilterToggleModel {
   const globalStore = useGlobalStore();

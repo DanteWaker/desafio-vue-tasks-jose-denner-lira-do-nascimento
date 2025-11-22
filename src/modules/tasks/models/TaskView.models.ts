@@ -1,8 +1,10 @@
 export interface Task {
-	id: string;
-	title: string;
-	description?: string;
-	is_completed: boolean;
-	created_at: Date;
-	updated_at: Date;
+  id: string;
+  title: string;
+  description?: string;
+  is_completed: boolean;
+  created_at: Date;
+  updated_at: Date;
 }
+
+export type TaskFilter = "all" | "completed" | "pending";

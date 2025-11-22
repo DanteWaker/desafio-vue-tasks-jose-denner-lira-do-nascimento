@@ -3,7 +3,7 @@ import { ref } from "vue";
 import type {
   ShowToastPayload,
   ToastMessage,
-} from "../interfaces/Toast.interfaces";
+} from "@/_shared/interfaces/Toast.interfaces";
 
 export const useToastStore = defineStore("toast", () => {
   const toasts = ref<ToastMessage[]>([]);

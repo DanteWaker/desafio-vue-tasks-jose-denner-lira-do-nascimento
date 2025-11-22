@@ -1,6 +1,5 @@
 import type { Ref } from "vue";
-
-export type TaskFilter = "all" | "completed" | "pending";
+import type { TaskFilter } from "@/modules/tasks/models/TaskView.models";
 
 export interface FilterOption {
   label: string;
