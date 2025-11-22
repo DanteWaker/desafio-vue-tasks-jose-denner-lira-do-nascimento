@@ -9,6 +9,7 @@ export const useGlobalStore = defineStore("global", () => {
   const tasks = useLocalStorage<Task[]>("vue-tasks-db", []);
 
   const currentFilter = ref<TaskFilter>("all");
+  const searchQuery = ref("");
   const toastStore = useToastStore();
   const taskNotifier = createTaskNotifier(toastStore);
 
@@ -66,9 +67,21 @@ export const useGlobalStore = defineStore("global", () => {
   const totalTasks = computed(() => tasks.value.length);
 
   const filteredTasks = computed(() => {
-    if (currentFilter.value === "completed") return completedTasks.value;
-    if (currentFilter.value === "pending") return pendingTasks.value;
-    return tasks.value;
+    let baseTasks = tasks.value;
+    if (currentFilter.value === "completed") {
+      baseTasks = completedTasks.value;
+    } else if (currentFilter.value === "pending") {
+      baseTasks = pendingTasks.value;
+    }
+
+    const normalizedQuery = searchQuery.value.trim().toLowerCase();
+    if (!normalizedQuery) {
+      return baseTasks;
+    }
+
+    return baseTasks.filter((task) =>
+      task.title.toLowerCase().includes(normalizedQuery)
+    );
   });
 
   const setFilter = (filter: TaskFilter) => {
@@ -77,9 +90,14 @@ export const useGlobalStore = defineStore("global", () => {
     taskNotifier.notifyFilterChanged(filter);
   };
 
+  const setSearchQuery = (value: string) => {
+    searchQuery.value = value;
+  };
+
   return {
     tasks,
     currentFilter,
+    searchQuery,
     filteredTasks,
     completedTasks,
     pendingTasks,
@@ -89,5 +107,6 @@ export const useGlobalStore = defineStore("global", () => {
     updateTask,
     toggleTask,
     setFilter,
+    setSearchQuery,
   };
 });
