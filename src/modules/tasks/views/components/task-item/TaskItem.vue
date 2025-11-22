@@ -1,41 +1,28 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import type { Task } from "@/modules/tasks/models/TaskView.models";
-import { useGlobalStore } from "@/_shared/stores/GlobalStore";
 import TaskFormModal from "../task-form-modal/TaskFormModal.vue";
+import type { TaskItemProps } from "./TaskItem.model";
+import { TaskItemViewModel } from "./TaskItem.viewmodel";
 
-const props = defineProps<{
-  task: Task;
-}>();
+const props = defineProps<TaskItemProps>();
 
 const emit = defineEmits<{
   (e: "remove", id: string): void;
 }>();
 
-const { toggleTask } = useGlobalStore();
-const isEditModalOpen = ref(false);
-
-const handleToggle = () => {
-  toggleTask(props.task.id);
-};
-
-const handleEdit = () => {
-  isEditModalOpen.value = true;
-};
-
-const closeEditModal = () => {
-  isEditModalOpen.value = false;
-};
-
-const handleRemove = () => {
-  emit("remove", props.task.id);
-};
+const {
+  isEditModalOpen,
+  borderClass,
+  handleToggle,
+  handleEdit,
+  closeEditModal,
+  handleRemove,
+} = TaskItemViewModel(props, emit);
 </script>
 
 <template>
   <li
     class="bg-white shadow overflow-hidden sm:rounded-md border"
-    :class="task.is_completed ? 'border-green-500' : 'border-transparent'"
+    :class="borderClass"
   >
     <div class="px-4 py-4 sm:px-6">
       <div class="flex items-start justify-between gap-6">
