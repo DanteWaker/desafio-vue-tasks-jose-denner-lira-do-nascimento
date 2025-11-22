@@ -36,7 +36,7 @@ const {
         class="flex min-h-screen items-end justify-center pt-4 px-4 pb-20 text-center sm:block sm:p-0"
       >
         <div
-          class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity z-40"
+          class="fixed inset-0 bg-black opacity-70 z-40"
           aria-hidden="true"
           @click="closeModal"
         ></div>
