@@ -8,7 +8,7 @@ const { tasks, hasTasks, removeTask } = useTasksView();
 </script>
 
 <template>
-  <div class="space-y-6">
+  <div class="space-y-5 sm:space-y-6">
     <FilterToggle />
     <TaskEmpty v-if="!hasTasks" />
     <TaskList v-else :tasks="tasks" @remove-task="removeTask" />

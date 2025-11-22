@@ -9,10 +9,10 @@ const { isModalOpen, openModal, closeModal } = ButtonViewModel();
   <div>
     <button
       @click="openModal"
-      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      class="inline-flex items-center px-3 py-2 text-xs font-semibold border border-transparent rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer transition-all sm:px-4 sm:py-2.5 sm:text-sm"
     >
       <svg
-        class="-ml-1 mr-2 h-5 w-5"
+        class="-ml-1 mr-2 h-4 w-4 sm:h-5 sm:w-5"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"

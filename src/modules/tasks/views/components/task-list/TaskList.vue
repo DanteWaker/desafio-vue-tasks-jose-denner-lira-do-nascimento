@@ -13,7 +13,7 @@ const { handleRemove } = TaskListViewModel(props, emit);
 </script>
 
 <template>
-  <ul role="list" class="space-y-3">
+  <ul role="list" class="space-y-3 sm:space-y-4">
     <TaskItem
       v-for="task in tasks"
       :key="task.id"

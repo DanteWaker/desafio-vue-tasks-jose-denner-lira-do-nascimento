@@ -25,7 +25,9 @@ const {
     :class="borderClass"
   >
     <div class="px-4 py-4 sm:px-6">
-      <div class="flex items-start justify-between gap-6">
+      <div
+        class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6"
+      >
         <label class="flex items-start gap-3 cursor-pointer select-none">
           <input
             type="checkbox"
@@ -50,7 +52,7 @@ const {
           </div>
         </label>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
           <button
             type="button"
             class="inline-flex items-center rounded-md border border-gray-200 px-3 py-1 text-xs font-medium text-gray-700 hover:bg-gray-100"
