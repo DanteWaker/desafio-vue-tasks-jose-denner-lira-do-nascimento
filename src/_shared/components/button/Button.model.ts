@@ -1,7 +1,17 @@
-import type { Ref } from "vue";
+import type { Component, ComputedRef } from "vue";
+
+export type ButtonVariant = "primary" | "secondary" | "danger";
+
+export interface ButtonProps {
+  label: string;
+  icon?: Component;
+  variant?: ButtonVariant;
+  type?: "button" | "submit";
+  fullWidth?: boolean;
+  disabled?: boolean;
+}
 
 export interface ButtonModel {
-  isModalOpen: Ref<boolean>;
-  openModal: () => void;
-  closeModal: () => void;
+  classes: ComputedRef<string>;
+  iconClasses: ComputedRef<string>;
 }

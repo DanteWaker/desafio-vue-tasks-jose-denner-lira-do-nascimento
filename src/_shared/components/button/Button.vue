@@ -1,30 +1,43 @@
 <script setup lang="ts">
-import TaskFormModal from "@/modules/tasks/views/components/task-form-modal/TaskFormModal.vue";
+import type { ButtonProps } from "./Button.model";
 import { ButtonViewModel } from "./Button.viewmodel";
 
-const { isModalOpen, openModal, closeModal } = ButtonViewModel();
+const props = withDefaults(defineProps<ButtonProps>(), {
+  variant: "primary",
+  type: "button",
+  fullWidth: false,
+  disabled: false,
+});
+
+const emit = defineEmits<{ (e: "click", event: MouseEvent): void }>();
+
+const { classes, iconClasses } = ButtonViewModel(props);
+
+const handleClick = (event: MouseEvent) => {
+  if (props.disabled) {
+    event.preventDefault();
+    event.stopPropagation();
+    return;
+  }
+
+  emit("click", event);
+};
 </script>
 
 <template>
-  <div>
-    <button
-      @click="openModal"
-      class="inline-flex items-center px-3 py-2 text-xs font-semibold border border-transparent rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer transition-all sm:px-4 sm:py-2.5 sm:text-sm"
-    >
-      <svg
-        class="-ml-1 mr-2 h-4 w-4 sm:h-5 sm:w-5"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-          clip-rule="evenodd"
-        />
-      </svg>
-      Add Task
-    </button>
-    <TaskFormModal :is-open="isModalOpen" @close="closeModal" />
-  </div>
+  <button
+    :type="type"
+    :class="classes"
+    :disabled="disabled"
+    @click="handleClick"
+  >
+    <component
+      v-if="icon"
+      :is="icon"
+      :class="iconClasses"
+      stroke-width="1.5"
+      aria-hidden="true"
+    />
+    <span>{{ label }}</span>
+  </button>
 </template>
